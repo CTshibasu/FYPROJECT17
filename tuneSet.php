@@ -3,7 +3,7 @@
 	ini_set('display_startup_errors',1);
 	error_reporting(-1);
 
-	$member_id = 109954;
+	// $member_id = 110046;
 
 	// now for the task to find and scrape the sets of tunes
 	function tuneSet($member_id, $pageNo = 1, $pageItem = 50){
