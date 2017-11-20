@@ -4,6 +4,7 @@
 	error_reporting(-1);
 
 	include 'recRelate.php';
+	include '../../tuneSet.php';
 
 	// this program will get a substring for the abc notation and return
 	// a list of tunes, the thing is the first tune will always be a precedent to
@@ -53,7 +54,7 @@
 	// echo ;
 
 	// now to specify that the function is to return the first abc of the setting
-	$array = json_decode(retABC($tid), 1); 
+	// $array = json_decode(retABC($tid), 1); 
 
 	// for the rest of the program, first var_dump() the array I converted into a PHP object
 	// var_dump($array["settings"][0]["abc"]);
@@ -78,4 +79,40 @@
 	// var_dump($get);
 	// var_dump($get["settings"][0]["abc"]);
 
-	echo retABC($tid);
+	// returns the full abc of a song
+	// echo retABC($tid);
+
+	// now find a relation of the 
+	// echo recRelate($tid);
+
+	// in order to get the abc of the tunes, you call the retABC function on all the 
+	// $alpha = json_decode(recRelate($tid), 1);
+
+	// now to loop through the abc of the object
+	// $rec_with = $alpha["recorded_with"];
+
+	// var_dump($rec_with[0]["id"]);
+
+	// for($i = 0; $i < count($rec_with); $i++){
+
+	// 	// use the index to get the ids, then the abcs
+	// 	$id = $rec_with[$i]["id"];
+
+	// 	// now use this id to call on the function
+	// 	$abcstr = retABC($id);
+
+	// 	echo "<pre>The abc for tune ID of: ".$id." is ".$abcstr."</pre><br>";
+	// }
+
+	// now the precedent for this particular program is to get a tune, that is part of a set and 
+	// with that set compare the other tunes in the set and maybe possibly other tunes in the other sets
+	// test this out on the tune - Colonel Fraser's, where the id is 1209
+	// use the function now - ...
+	var_dump(tuneRelate(1209));
+
+	// now it has, the information for the 3 sets!, now you have to go over the
+	// first is to loop through sets, with the id of the sets given in each, for example 10355
+	// now with 10355, and the member_id, go to the set info part and get the abc of the tunes
+
+	// look within the loop and compare the strings
+	// problem is that information can be lost to exactly which tune that the abc belongs to
