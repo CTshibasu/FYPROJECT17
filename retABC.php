@@ -51,6 +51,14 @@
 		}
 	}
 
+	// function that finds the occurrences of characters in a given string
+	// classical needle in the haystack scenario
+	function strposX($haystack, $needle, $number) {
+	    // decode utf8 because of this behaviour: https://bugs.php.net/bug.php?id=37391
+	    preg_match_all("/$needle/", utf8_decode($haystack), $matches, PREG_OFFSET_CAPTURE);
+	    return $matches[0][$number-1][1];
+	}
+
 	// echo ;
 
 	// now to specify that the function is to return the first abc of the setting
@@ -167,4 +175,9 @@
 	// var_dump array structure
 	// var_dump($abcINFO); // successful
 
-	
+	// now for the next step, try split the abc
+	echo strposX($abcINFO[0]["abc"], '2', 1);
+
+	// compare this needle and haystack of each passing char for the first bar, for example
+	// if a [...]
+
