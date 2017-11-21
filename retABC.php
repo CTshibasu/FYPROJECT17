@@ -15,7 +15,7 @@
 	// enter a tune id 
 
 	// tune id - tune name: Colonel Fraser
-	$tid = 40;
+	$tid = 1209;
 
 	// returns the first `abc` OF THE first tune 
 	function retABC($tid){
@@ -108,7 +108,7 @@
 	// with that set compare the other tunes in the set and maybe possibly other tunes in the other sets
 	// test this out on the tune - Colonel Fraser's, where the id is 1209
 	// use the function now - ...
-	var_dump(tuneRelate(1209));
+	// var_dump(tuneRelate(1209));
 
 	// now it has, the information for the 3 sets!, now you have to go over the
 	// first is to loop through sets, with the id of the sets given in each, for example 10355
@@ -116,3 +116,55 @@
 
 	// look within the loop and compare the strings
 	// problem is that information can be lost to exactly which tune that the abc belongs to
+	// so make an array with tune ids and also the abcs
+	// then push into an array, empty the one with the custom keys etc.
+
+	// array that has the abcs of other tunes of other sets related to the selected tune
+	$abcINFO = array();
+
+	// so call the function to get sets for the tune
+	$a = json_decode(tuneRelate($tid), 1);
+
+	// now check for the array, $a
+	// var_dump($a);
+
+	// now make a loop that runs through the sets array
+	for($i=0; $i < count($a["sets"]); $i++){
+		// now use the member_id and the tune_id to get the setINFO
+		$set_id = $a["sets"][$i]["id"];
+
+		// and the member_id
+		$member_id = $a["sets"][$i]["member"]["id"];
+
+		// now call the setInfo function, returns the JSON
+		$setArr = json_decode(getSet($member_id, $set_id), 1);
+
+		// now from there, look at the contents of the array
+		// now loop through the returned array
+		for($j = 0; $j < count($setArr["settings"]); $j++){
+
+			// this will go through each individual tune(s)
+			if($setArr["settings"][$j]["id"] == $tid){
+				// do nothing... 
+			} else {
+				// create an array with the tune_id and the abc
+				// with the key and value struct of an array
+
+				$arrtemp = array(
+					"id" => $setArr["settings"][$j]["id"],
+					"abc" => $setArr["settings"][$j]["abc"]
+				);
+
+				// now push the array into the array, abcINFO
+				$abcINFO[] = $arrtemp;
+				// unset($arrtemp);
+			}
+
+		}
+
+	}
+
+	// var_dump array structure
+	// var_dump($abcINFO); // successful
+
+	
