@@ -237,3 +237,49 @@ zingchart.render({
 	width: "100%" 
 });
 </script>
+
+<?php 
+    // in order to create the treemap with the genres of my liking, then:
+    // create an array and have it go through the elements, being the types
+    // loop through it and get the 5 tunes of that get how many sets they may be in.. as 
+    // a way to. get the number would be to get the no. of sets it belongs to ? (suggestion)
+    // the loop will be nested...
+
+    // create array of genres
+    $genres = array("jigs", "reels", "slip jigs", "hornpipes", "polkas", "slides", "waltzes", "barndances", "strathspeys", "three-twos", "marzukas");
+
+    // after this, call the search function on each index of the 
+
+    $str = '<script type="text/javascript">
+        var config = {
+            "graphset": [
+                {
+                    "type":"treemap",
+                    "plotarea":{
+                        "margin": "0 0 30 0"
+                    },
+                    "tooltip":{
+                        
+                    },
+                    "options":{
+                        
+                    },
+
+                    // loop will start here
+                    "series": [{'..'}]
+                }
+            ]
+        };
+
+        zingchart.render({ 
+            id : "myChart", 
+            data : myConfig, 
+            height: "100%", 
+            width: "100%" 
+        });
+    </script>';
+?>
+
+
+
+
