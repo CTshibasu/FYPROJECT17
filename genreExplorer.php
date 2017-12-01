@@ -5,6 +5,7 @@
 
 	// now to use the include files for the header and the...
 	include '../../Tunebook.php';
+    include '../../test_session.php';
 	include '../../tuneSet.php';
 	include 'recRelate.php';
 
@@ -27,8 +28,8 @@
 					padding:0;
 				}
 				#myChart {
-					height:100%;
-					width:100%;
+					height:600px;
+					width:1000px;
 					min-height:150px;
 				}
 				.zc-ref {
@@ -50,7 +51,7 @@
 		                <h1 class="page-header"><?=$title?></h1>
 		            </div>
 		            <!-- <div class="well"> -->
-			            <div class="container" style="width:600px;height:500px">
+			            <div class="wells" style="width:1000px;height:600px">
 			            	<div id="myChart">
 								<!-- <a class="zc-ref" href="https://www.zingchart.com/">Powered by ZingChart</a>
 						        <select id ="treemap-layout">
@@ -75,7 +76,7 @@
 		</body>
 	</html>
 
-<script>
+<!-- <script>
 	var myConfig = {
     "graphset":[
         {
@@ -236,7 +237,7 @@ zingchart.render({
 	height: "100%", 
 	width: "100%" 
 });
-</script>
+</script> -->
 
 <?php 
     // in order to create the treemap with the genres of my liking, then:
@@ -246,12 +247,14 @@ zingchart.render({
     // the loop will be nested...
 
     // create array of genres
-    $genres = array("jigs", "reels", "slip jigs", "hornpipes", "polkas", "slides", "waltzes", "barndances", "strathspeys", "three-twos", "marzukas");
+    $genres = array("jigs", "reels", "slip+jigs", "hornpipes", "polkas", "slides", "waltzes", "barndances", "strathspeys", "three-twos", "marzukas");
 
-    // after this, call the search function on each index of the 
+    // after this, call the search function on each index of the array for the value of the array and use the values as input for the function
+    // the nested loop will work on 2 levels
 
+    // $idx = 0;
     $str = '<script type="text/javascript">
-        var config = {
+        var myConfig = {
             "graphset": [
                 {
                     "type":"treemap",
@@ -266,18 +269,70 @@ zingchart.render({
                     },
 
                     // loop will start here
-                    "series": [{'..'}]
-                }
-            ]
-        };
+                    "series": [';
 
-        zingchart.render({ 
+    // inbetween these strings will be the two-level loop
+    // using the outer loop, we traverse the array
+    // use the regular loop infrastructure
+    for($idx = 0; $idx < count($genres); $idx++){
+        if($idx != 0){
+            $str.= ",";
+        }
+
+        // foreach($genres as $key => $value){
+        // now go through the values and call the search function
+        $retresult = json_decode(get_search("tunes", $genres[$idx], 6), 1);
+        // var_dump($retresult["tunes"]);
+
+        // NOW for the loop
+        $str.= '{
+                "text": "'.$retresult["tunes"][0]["type"].'", 
+                "children":[';
+
+        // now have 5 tunes to reference from 
+        // for loop for the jigs, some duplicate entries are present, so array_unique will work
+        $tunes = array_unique($retresult["tunes"], SORT_REGULAR);
+
+        // var_dump($tunes[5]["name"]);
+
+        // now to actually go through the loop to make the children for jigs
+        for($i = 0; $i < count($tunes); $i++){
+            // now append the segments onto the string
+            if($i != 0){
+                $str .= ",";
+            }
+
+            // this will take the 5 names of the tunes in the array
+            $str .= '{
+                    "text": "'.$tunes[$i]["name"].'",
+                    "value": 1
+            }';
+        }
+
+
+    $str.=  ']
+        }';
+
+    // end of the loop
+    }
+
+    // closing of the myConfig dataset
+    $str.=     ']
+            }
+        ]
+    };
+    ';
+
+    // rendering the chart on the div
+    $str.= 'zingchart.render({ 
             id : "myChart", 
             data : myConfig, 
             height: "100%", 
             width: "100%" 
         });
     </script>';
+
+    echo $str;
 ?>
 
 
