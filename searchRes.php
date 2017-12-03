@@ -113,14 +113,19 @@
 
 		?>
 
-		<div class="row">
+		<!-- <div class="row"> -->
 			<!-- may import the php into the section of the row -->
 
 			<!-- preferably, loop the page on calls from the function, and repeat the modals -->
 			
-			<div class="jumbotron">
+			<div class="well" style="display:inline-block; width:730px;">
 			  <div class="container">
-			    <h3 class="display-3"><?php echo ($i+1).". ".$query["tunes"][$i]["name"];?></h3>
+			    <h3 class="display-3">
+			    	<!-- <?php echo ($i+1).". ".$query["tunes"][$i]["name"];?> -->
+			    	<a value="<?=$query["tunes"][$i]["id"]?>" href="tuneSpec.php?id=<?=$query["tunes"][$i]["id"]?>">
+			    		<?php echo ($i+1).". ".$query["tunes"][$i]["name"];?>
+			    	</a>
+		    	</h3>
 			    <p class="lead">
 			    	<!-- want to be able to create a form with the link -->
 			    	<!-- click the type of tune -->
@@ -152,7 +157,7 @@
 			  </div>
 			</div>
 			
-		</div>
+		<!-- </div> -->
 		<?php
 
 			// end of loop
