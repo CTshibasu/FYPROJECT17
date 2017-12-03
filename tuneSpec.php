@@ -17,6 +17,7 @@
 	include '../../Tunebook.php';
 	include '../../tuneSet.php';
 	include 'recRelate.php';
+	include 'setsRelate.php';
 
 	$res = json_decode(getTuneInfo($tune_id), 1);
 	$title = "Tune: ".$res["name"];
@@ -25,19 +26,21 @@
 	// var_dump test
 	// var_dump($res);
 ?>
+
 <!DOCTYPE html>
 	<html>
 		<head>
 			<meta charset="utf-8"/>
 			<title>Chart.js demo</title>
-			<script
+			<!-- <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"></script> -->
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
 			<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 			<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-		ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>  
+		ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
+			<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script> 
 			<link href="https://fonts.googleapis.com/css?family=Crete+Round" rel="stylesheet">
 			<style>
 				.w {
@@ -48,6 +51,12 @@
 		          display:inline-block;
 		          margin-top: 0px;
 		        }
+
+		        #containers{
+	        	  margin: 20px;
+				  width: 400px;
+				  height: 8px;
+		        }
 			</style>
 		</head>
 		<body>
@@ -56,23 +65,116 @@
 					<div class="col-lg-12">
 						<!-- PAGE HEADER FOR THE TITLE -->
 		                <h1 class="page-header"><?=$title?></h1>
+		                <!-- <div >H</div> -->
 		            </div>
+	                
 		            <!-- may include some extra bits but not required at the moment -->
-		           <div class="well" style="display:inline-block; width:650px;height:600px">
+		            <div class="well" style="display:inline-block; width:1300px;height:500px">
 					    <div class="container">
+					    	<span style="display:inline-block;margin:0;margin-left: -395px;margin-top:-20px;"><h3>Aliases for <?=$res["name"]?></h3></span>
 					    	<!-- contain the info on the tune -->
-					    	<div class="w" width="650px" height="400px">
+					    	<!-- <button type="button" id="fact" style="margin-left: 20px;width:50px" class="btn btn-info" data-toggle="popover" data-placement="right" title="What is This?" data-content="Below holds the aliases for the <?=$res["name"]?>">?</button> -->
+
+					    	<!-- <a tabindex="0" class="btn btn-lg btn-primary" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="<b>Example popover</b> - title" data-content="<div><b>Example popover</b> - content</div>">?</a> -->
+
+					    	<div class="w popper" width="650px" height="300px">
 								<!-- create the canvas element, will have the chart -->
-								<div id="myChart" style="margin-top: 100px;" width="400px" height="400px"></div>
+								<div id="myChart" style="margin-top: 45px; width:450px; display: inline-block;"></div>
 							</div>
-							
-							<div style="width:200px;height:200px;margin-left:450px;">
-								Type: <a value="<?=$res["type"]?>" href=""><?=$res["type"]?></a><br>
-								Key: <a value="<?=$res["settings"][0]["key"]?>" href=""><?=$res["settings"][0]["key"]?></a>
+							<!-- <div id="charter" style="margin-top:11px;width:450px;height:400px"></div> -->
+							<!-- <div class="" width="650px" height="300px" style="margin-left:500px;">
+								<div class="Progress" style="margin-top: 20px;">
+								    <span class="Progress-label">Tunebooks: <strong><?=$res["tunebooks"]?></strong></span>
+								    <progress max="1000" value="<?=$res["tunebooks"]?>" class="Progress-main">
+								        <div class="Progress-bar" role="presentation">
+								            <span class="Progress-value" style="width: 80%;"> </span>
+								        </div>
+								    </progress>
+								</div>
 							</div>
+							<div class="Progress" style="margin-top: 20px;">
+							    <span class="Progress-label" style="margin-left: 100px;">Recordings: <strong><?=$res["recordings"]?></strong></span>
+							    <progress max="1000" value="<?=$res["recordings"]?>" class="Progress-main">
+							        <div class="Progress-bar" role="presentation">
+							            <span class="Progress-value" style="width: 80%;"> </span>
+							        </div>
+							    </progress>
+							</div>
+							<div class="Progress" style="margin-top: 20px;">
+							    <span class="Progress-label" style="margin-left: 100px;">Sets: <strong><?=$res["recordings"]?></strong></span>
+							    <progress max="1000" value="<?=$res["recordings"]?>" class="Progress-main">
+							        <div class="Progress-bar" role="presentation">
+							            <span class="Progress-value" style="width: 80%;"> </span>
+							        </div>
+							    </progress>
+							</div> -->
 						</div>
-					</div>
-					    
+
+						</div>
+						<div>
+						<div class="col-lg-12">
+							<!-- PAGE HEADER FOR THE TITLE -->
+			                <h1 class="page-header"><?="Related tunes for ".$res["name"]?></h1>
+			                <!-- <div >H</div> -->
+		            	</div>	
+						<?php
+							// put the related recording tunes to the 
+							$recRelate = json_decode(relateRec($tune_id), 1);
+							$recwith = $recRelate["recorded_with"];
+
+							// for loop traversing the 
+							for($idx = 0; $idx < count($recwith)/6; $idx++){
+						?>
+						<!-- the div -->
+						<div class="well" style="display:inline-block; width:520px;height:200px">
+							<!-- <?=count($recwith)?> -->
+							<!-- for the name of the tune -->
+							<h3 class="display-3">
+				    			<!-- <a value="<?=$recwith[$idx]["id"]?>" href="tuneSpec.php?id=<?=$recwith[$idx]["id"]?>"> -->
+				    				<?php echo ($idx+1).". ".$recwith[$idx]["name"];?>
+				    			<!-- </a> -->
+							</h3> 
+
+							<p class="lead">
+						    	<!-- want to be able to create a form with the link -->
+						    	<!-- click the type of tune -->
+					    		<!-- hidden form with the value in it -->
+					    		<?php
+					    			// going to have to get the individual information
+					    			$tinfo = json_decode(getTuneInfo($tune_id), 1);
+					    		?>
+
+					    		<form class="searchForm_" data-genre_id="<?=$idx?>" style="" method="GET" action="searchRes.php">
+					    			<input type="hidden" id="q_<?=$idx?>" name="querySearch" value="<?=$tinfo["type"]?>">
+					    			Type:  <input type="submit" value="<?=$tinfo["type"]?>" />
+					    		</form>
+					    	</p>
+
+					    	<!-- button -->
+					    	<button class="btn btn-info" style="margin-top: 14px;margin-left:390px;">Add Tune</button>
+					    	<!-- link for more information -->
+							<a value="<?=$recwith[$idx]["id"]?>" href="tuneSpec.php?id=<?=$recwith[$idx]["id"]?>">
+				    				<?php echo '<h5 class="display-3" style="margin-top:-10px;">See More...</h5>'?>
+			    			</a>
+						</div>
+						<?php
+							}
+						?>
+						</div>
+						 <!-- <div id="containers" style="margin-left:550px; margin-top: -300px">FOUND IN:</div> -->
+						<!-- make a hidden input with text to call in the aliases and also the type -->
+						<textarea style="display:none" id="getAliases">
+						<?php
+							// now for adding onto the string and info of colonel Fraser
+							$strInput="";
+							foreach($res["aliases"] as $key => $value){
+								// append the aliases onto. the string
+								$strInput .= $value." ";
+							}
+							echo $strInput;
+						?>
+						</textarea>
+					</div> <!-- /.end of well -->
 				</div>
 			</div>
 
@@ -82,13 +184,39 @@
 		</body>
 	</html>
 	<script type="text/javascript">
+			var text = $('#getAliases').text();
 			var myConfig = {
 			  type: 'wordcloud',
 			  options: {
-			    text: 'We the people of the United States, in order to form a more perfect union, establish justice, insure domestic tranquility, provide for the common defense, promote the general welfare, and secure the blessings of liberty to ourselves and our posterity, do ordain and establish this Constitution for the United States of America.',
-			  }
+			    text: text,
+			    minLength: 4,
+			    colorType: 'palette',
+    			palette: ['#2196F3','#3F51B5','#42A5F5','#5C6BC0','#64B5F6','#7986CB','#90CAF9','#9FA8DA','#BBDEFB','#C5CAE9'],
+				  style: {
+				      fontFamily: 'Crete Round',
+				      
+				      hoverState: {
+				        backgroundColor: '#BBDEFB',
+				        borderRadius: 2,
+				        fontColor: 'white'
+				      },
+				      tooltip: {
+				        text: '%text: %hits',
+				        visible: true,
+				        
+				        alpha: 0.9,
+				        backgroundColor: '#1976D2',
+				        borderRadius: 2,
+				        borderColor: 'none',
+				        fontColor: 'white',
+				        fontFamily: 'Georgia',
+				        textAlpha: 1
+				      }
+			      }
+				}
 			};
-			 
+			
+			// rendering configurations for it
 			zingchart.render({ 
 				id: 'myChart', 
 				data: myConfig, 
@@ -96,36 +224,213 @@
 				width: '100%' 
 			});
 
-			// var ctx = document.getElementById("myChart").getContext('2d');
-			// var data = {
-			// 	// These labels appear in the legend and in the tooltips when hovering different arcs
-			//     labels: [
-			//         'Red',
-			//         'Yellow',
-			//         'Blue'
-			//     ],
-			//     datasets: [
-			// 	    {
-			// 	        data: [10, 20, 30],
-			// 	        backgroundColor: [
-   //                                      '#66B266',
-   //                                      '#7F7F7F'
-   //                                  ],
-   //                                  hoverBackgroundColor: [
-   //                                      '#66B266',
-   //                                      '#7F7F7F'
-   //                                  ]
-			// 	    }
-			//     ]
-			// };
+			var myConfig = {
+				backgroundColor:'#FBFCFE',
+				 	type: "ring",
+				 	title: {
+				 	  text: "Monthly Page Views",
+				 	  fontFamily: 'Lato',
+				 	  fontSize: 14,
+				 	  // border: "1px solid black",
+				 	  padding: "15",
+				 	  fontColor : "#1E5D9E",
+				 	},
+				 	subtitle: {
+				 	  text: "06/10/16 - 07/11/16",
+				 	  fontFamily: 'Lato',
+				 	  fontSize: 12,
+				 	  fontColor: "#777",
+				 	  padding: "5"
+				 	},
+				 	plot: {
+				 	  slice:'50%',
+				 	  borderWidth:0,
+				 	  backgroundColor:'#FBFCFE',
+				 	  animation:{
+				 	    effect:2,
+				 	    sequence:3
+				 	  },
+				 	  valueBox: [
+				 	    {
+				 	      type: 'all',
+				 	      text: '%t',
+				 	      placement: 'out'
+				 	    }, 
+				 	    {
+				 	      type: 'all',
+				 	      text: '%npv%',
+				 	      placement: 'in'
+				 	    }
+				 	  ]
+				 	},
+				  tooltip:{
+				 	    fontSize:16,
+				 	    anchor:'c',
+				 	    x:'50%',
+				 	    y:'50%',
+				 	    sticky:true,
+				 	    backgroundColor:'none',
+				 	    borderWidth:0,
+				 	    thousandsSeparator:',',
+				 	    text:'<span style="color:%color">Page Url: %t</span><br><span style="color:%color">Pageviews: %v</span>',
+				      mediaRules:[
+				        {
+				            maxWidth:500,
+				       	    y:'54%',
+				        }
+				      ]
+				  },
+				 	plotarea: {
+				 	  backgroundColor: 'transparent',
+				 	  borderWidth: 0,
+				 	  borderRadius: "0 0 0 10",
+				 	  margin: "70 0 10 0"
+				 	},
+				 	legend : {
+				    toggleAction:'remove',
+				    backgroundColor:'#FBFCFE',
+				    borderWidth:0,
+				    adjustLayout:true,
+				    align:'center',
+				    verticalAlign:'bottom',
+				    marker: {
+				        type:'circle',
+				        cursor:'pointer',
+				        borderWidth:0,
+				        size:5
+				    },
+				    item: {
+				        fontColor: "#777",
+				        cursor:'pointer',
+				        offsetX:-6,
+				        fontSize:12
+				    },
+				    mediaRules:[
+				        {
+				            maxWidth:500,
+				            visible:false
+				        }
+				    ]
+				 	},
+				 	scaleR:{
+				 	  refAngle:270
+				 	},
+					series : [
+						{
+						  text: "Docs",
+							values : [106541],
+							lineColor: "#00BAF2",
+							backgroundColor: "#00BAF2",
+							lineWidth: 1,
+							marker: {
+							  backgroundColor: '#00BAF2'
+							}
+						},
+						{
+						  text: "Gallery",
+							values : [56711],
+							lineColor: "#E80C60",
+							backgroundColor: "#E80C60",
+							lineWidth: 1,
+							marker: {
+							  backgroundColor: '#E80C60'
+							}
+						},
+						{
+						  text: "Index",
+							values : [43781],
+							lineColor: "#9B26AF",
+							backgroundColor: "#9B26AF",
+							lineWidth: 1,
+							marker: {
+							  backgroundColor: '#9B26AF'
+							}
+						}
+					]
+				};
+				 
+				zingchart.render({ 
+					id : 'charter', 
+				  data: {
+				    gui:{
+				      contextMenu:{
+				        button:{
+				          visible: true,
+				          lineColor: "#2D66A4",
+				          backgroundColor: "#2D66A4"
+				        },
+				        gear: {
+				          alpha: 1,
+				          backgroundColor: "#2D66A4"
+				        },
+				        position: "right",
+				        backgroundColor:"#306EAA", /*sets background for entire contextMenu*/
+				        docked: true, 
+				        item:{
+				          backgroundColor:"#306EAA",
+				          borderColor:"#306EAA",
+				          borderWidth: 0,
+				          fontFamily: "Lato",
+				          color:"#fff"
+				        }
+				      
+				      },
+				    },
+				    graphset: [myConfig]
+				  },
+					height: '499', 
+					width: '99%' 
+				});
 
-			// var myDoughnutChart = new Chart(ctx, {
-			//     type: 'doughnut',
-			//     data: data,
-			//     options: {
-   //                        animation:{
-   //                            animateScale:true
-   //                        }
-   //                	}
-			// });
+				// click button event
+				$('.btn').on('click', function(e){
+					e.preventDefault();
+
+					alert('click!');
+				});
+
+				// now having to create a tunebook for the 
+				$('.memberForm_').submit(function(e){
+
+					// e preventDefault
+					e.preventDefault();
+
+					var m = $(this).data("member_id");
+					// alert(m);
+
+					// now to get the id and
+					var member_query = $("#member_"+m).val();
+					var member_name = $("#name_"+m).val();
+
+					var $form = $( this ),
+					           formURL = $form.attr( "action" );
+					           GETData = $form.serializeArray();
+					
+					           var result = $.ajax({
+					               data: GETData,
+					               type: 'GET',
+					               url : formURL,
+					               global: false,
+					               async:false,
+					           success:function(data, textStatus, jqXHR)
+					           {
+					               // if(data == '1') {
+					               //   $form.hide();
+					               // }else{
+					               //   alert("ERROR: "+data);
+					               //   return false;
+					               // }
+
+					               alert('success!');
+					               window.location.href = "index.php?memberID="+member_query+"&memberName="+member_name;
+					
+					           },
+					           error: function(jqXHR, textStatus, errorThrown)
+					           {
+					               alert("There was an error submitting your details");//if fails    
+					           }
+					           }).responseText;
+				});
+
+			
 	</script>
