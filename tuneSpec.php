@@ -64,22 +64,24 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<!-- PAGE HEADER FOR THE TITLE -->
-		                <h1 class="page-header"><?=$title?></h1>
+		                <h1 class="page-header"><?=$title." | ".$res["type"]?></h1>
 		                <!-- <div >H</div> -->
 		            </div>
 	                
 		            <!-- may include some extra bits but not required at the moment -->
 		            <div class="well" style="display:inline-block; width:1600px;height:500px;">
 					    <div class="container">
-					    	<span style="display:inline-block;margin:0;margin-left: -395px;margin-top:-20px;"><h3>Aliases for <?=$res["name"]?></h3></span>
+					    	<span style="display:inline-block;margin:0;margin-left: -395px;margin-top:-520px;">
+					    		<h3>Aliases for <?=$res["name"]?></h3>
+					    	</span>
 					    	<!-- contain the info on the tune -->
 					    	<!-- <button type="button" id="fact" style="margin-left: 20px;width:50px" class="btn btn-info" data-toggle="popover" data-placement="right" title="What is This?" data-content="Below holds the aliases for the <?=$res["name"]?>">?</button> -->
 
 					    	<!-- <a tabindex="0" class="btn btn-lg btn-primary" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="<b>Example popover</b> - title" data-content="<div><b>Example popover</b> - content</div>">?</a> -->
 
-					    	<div class="w popper" width="650px" height="300px" style="margin-left: -190px;">
+					    	<div class="w popper" width="650px" height="400px" style="margin-left: -190px;margin-top:-10px;">
 								<!-- create the canvas element, will have the chart -->
-								<div id="myChart" style="margin-top: 45px; width:450px; display: inline-block;"></div>
+								<div id="myChart" style="margin-top: 45px; width:450px; height:400px; display: inline-block;"></div>
 							</div>
 							<!-- <div id="charter" style="margin-top:11px;width:450px;height:400px"></div> -->
 							<!-- <div class="" width="650px" height="300px" style="margin-left:500px;">
@@ -108,24 +110,45 @@
 							        </div>
 							    </progress>
 							</div> -->
-							<div class="container" style="display:inline-block; margin-left: 500px;margin-top: -1000px;width:200px;">
-								<span style="display:inline-block;margin:0;margin-left: -295px;margin-top:-20px;"><h3>Sets found for <?=$res["name"]?></h3></span>
+							
+							</div>
+							<!-- tunes set section -->
+							<div class="container" style="display:inline-block; margin-left: 850px;margin-top:-800px;width:600px;height:400px;">
+								<span style="display:inline-block;margin:0;margin-left: -295px;margin-top:-20px;">
+									<h3>Tunes sets with <?=$res["name"]."..."?></h3>
+								</span>
 								<!-- extract the data -->
-								
+								 <?php
+									// now extract the json using the tuneRelate function
+									$resSet = json_decode(tuneRelate($tune_id), 1);
+									$setInfo = $resSet["sets"];
+
+									// for loop going through the sets
+									for($pos = 0; $pos < 3; $pos++){
+										if(!$setInfo[$pos]["id"]){
+											// do nothing...
+										} else {
+								?>
+									<h3 class="display-3" style="margin-left: -290px;">
+										<a value="<?=$setInfo[$pos]["id"]?>" href="#">
+							    			<?php
+							    				echo ($pos+1).". ".$setInfo[$pos]["name"];
+							    			?>
+							    		</a>
+									</h3>
+								<?php
+										}
+									}
+								?>
 							</div>
 						</div>
 						<!-- for the related sets for the tune -->
 						
 						</div>
 
-						<!-- <div class="well" style="display:inline-block;width:200;height:200; margin-top: 10px;"></div> -->
-						<!-- another well div -->
-						<!-- <div class="well" style="display:inline-block;width:100px;height:100px;">
-						</div> -->
 						<div class="col-lg-12">
 							<!-- PAGE HEADER FOR THE TITLE -->
 			                <h1 class="page-header"><?="Related tunes for ".$res["name"]?></h1>
-			                <!-- <div >H</div> -->
 		            	</div>	
 						<?php
 							// put the related recording tunes to the 
@@ -141,7 +164,7 @@
 							<!-- for the name of the tune -->
 							<h3 class="display-3">
 				    			<!-- <a value="<?=$recwith[$idx]["id"]?>" href="tuneSpec.php?id=<?=$recwith[$idx]["id"]?>"> -->
-				    				<?php echo ($idx+1).". ".$recwith[$idx]["name"];?>
+			    				<?php echo ($idx+1).". ".$recwith[$idx]["name"];?>
 				    			<!-- </a> -->
 							</h3> 
 
