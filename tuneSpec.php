@@ -69,7 +69,7 @@
 		            </div>
 	                
 		            <!-- may include some extra bits but not required at the moment -->
-		            <div class="well" style="display:inline-block; width:1300px;height:500px">
+		            <div class="well" style="display:inline-block; width:1600px;height:500px;">
 					    <div class="container">
 					    	<span style="display:inline-block;margin:0;margin-left: -395px;margin-top:-20px;"><h3>Aliases for <?=$res["name"]?></h3></span>
 					    	<!-- contain the info on the tune -->
@@ -77,7 +77,7 @@
 
 					    	<!-- <a tabindex="0" class="btn btn-lg btn-primary" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="<b>Example popover</b> - title" data-content="<div><b>Example popover</b> - content</div>">?</a> -->
 
-					    	<div class="w popper" width="650px" height="300px">
+					    	<div class="w popper" width="650px" height="300px" style="margin-left: -190px;">
 								<!-- create the canvas element, will have the chart -->
 								<div id="myChart" style="margin-top: 45px; width:450px; display: inline-block;"></div>
 							</div>
@@ -108,10 +108,20 @@
 							        </div>
 							    </progress>
 							</div> -->
+							<div class="container" style="display:inline-block; margin-left: 500px;margin-top: -1000px;width:200px;">
+								<span style="display:inline-block;margin:0;margin-left: -295px;margin-top:-20px;"><h3>Sets found for <?=$res["name"]?></h3></span>
+								<!-- extract the data -->
+								
+							</div>
+						</div>
+						<!-- for the related sets for the tune -->
+						
 						</div>
 
-						</div>
-						<div>
+						<!-- <div class="well" style="display:inline-block;width:200;height:200; margin-top: 10px;"></div> -->
+						<!-- another well div -->
+						<!-- <div class="well" style="display:inline-block;width:100px;height:100px;">
+						</div> -->
 						<div class="col-lg-12">
 							<!-- PAGE HEADER FOR THE TITLE -->
 			                <h1 class="page-header"><?="Related tunes for ".$res["name"]?></h1>
@@ -154,7 +164,7 @@
 					    	<button class="btn btn-info" style="margin-top: 14px;margin-left:390px;">Add Tune</button>
 					    	<!-- link for more information -->
 							<a value="<?=$recwith[$idx]["id"]?>" href="tuneSpec.php?id=<?=$recwith[$idx]["id"]?>">
-				    				<?php echo '<h5 class="display-3" style="margin-top:-10px;">See More...</h5>'?>
+			    				<?php echo '<h5 class="display-3" style="margin-top:-10px;">See More...</h5>'?>
 			    			</a>
 						</div>
 						<?php
