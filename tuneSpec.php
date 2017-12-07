@@ -23,6 +23,9 @@
 	$title = "Tune: ".$res["name"];
 	include 'inc_header.php';
 
+	// to get the settings information on the selected tune 
+	$settings = $res["settings"];
+
 	// var_dump test
 	// var_dump($res);
 ?>
@@ -60,13 +63,47 @@
 			</style>
 		</head>
 		<body>
+			<!--  -->
 			<div id="page-wrapper">
 				<div class="row">
 					<div class="col-lg-12">
 						<!-- PAGE HEADER FOR THE TITLE -->
-		                <h1 class="page-header"><?=$title." | ".$res["type"]?></h1>
+		                <h1 class="page-header">
+		                	<?=$title.' | <a value="'.$res["type"].'" href="searchres.php?querySearch='.$res["type"].'">'.strtoupper($res["type"]).'</a>'?>
+	                	</h1>
 		                <!-- <div >H</div> -->
 		            </div>
+
+					<!-- <div class="well" style="display:inline-block; width:1600px; height:600px;">
+		                <h2 class="" style="margin-top: -5px">Settings for <?=" ".$res["name"]?></h2>
+						<div id="faq" role="tablist" aria-multiselectable="true" style="margin-top:10px;">
+							<?php 
+								// going to be the beginning of a loop
+								for($idx = 0; $idx < count($res["settings"]); $idx++){
+							?>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="Setting_<?=$idx?>">
+									<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#faq" href="#answer_<?=$idx?>" aria-expanded="false" aria-controls="answer_<?=$idx?>">
+									Setting<?=($idx+1)?>
+									</a>
+									</h5>
+								</div>
+								<div id="answer_<?=$idx?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="Setting_<?=$idx?>">
+									<div class="panel-body">
+									<?php
+										echo "<strong>Key:</strong><a> ".$res["settings"][$idx]["key"]."</a>";
+										echo "<br><strong>ABC Notation:</strong> ".$res["settings"][$idx]["abc"];
+									?>
+									</div>
+								</div>
+							</div>
+							<?php
+								// going to be the end of a loop
+								}
+							?>
+						</div>
+					</div> -->
 	                
 		            <!-- may include some extra bits but not required at the moment -->
 		            <div class="well" style="display:inline-block; width:1600px;height:500px;">
@@ -112,20 +149,23 @@
 							</div> -->
 							
 							</div>
+							<?php
+								// now extract the json using the tuneRelate function
+								$resSet = json_decode(tuneRelate($tune_id), 1);
+								$setInfo = $resSet["sets"];
+							?>
 							<!-- tunes set section -->
 							<div class="container" style="display:inline-block; margin-left: 850px;margin-top:-800px;width:600px;height:400px;">
-								<span style="display:inline-block;margin:0;margin-left: -295px;margin-top:-20px;">
-									<h3>Tunes sets with <?=$res["name"]."..."?></h3>
+								<span style="display:block;margin:0;margin-left: -295px;margin-top:-20px;">
+									<h3 style="<?php if(count($setInfo) == 0) echo "display:none;"?>;">Tunes sets with <?=$res["name"]."..."?></h3>
 								</span>
 								<!-- extract the data -->
+								<!-- <div class="container" style="margin-top: -10px;"> -->
 								 <?php
-									// now extract the json using the tuneRelate function
-									$resSet = json_decode(tuneRelate($tune_id), 1);
-									$setInfo = $resSet["sets"];
 
 									// for loop going through the sets
 									for($pos = 0; $pos < 3; $pos++){
-										if(!$setInfo[$pos]["id"]){
+										if(!isset($setInfo[$pos]["id"])){
 											// do nothing...
 										} else {
 								?>
@@ -140,6 +180,11 @@
 										}
 									}
 								?>
+								<!-- direct the user to full list of available sets for the tune, page needs to be created for it -->
+								<!-- check for the number of set info, if 0, set displays to none -->
+								<a value="" href="#" style="<?php if(count($setInfo) == 0) echo "display:none;" ?>">
+			    					<h5 class="display-3" style="margin-top:25px;">See More...</h5>
+		    					</a>
 							</div>
 						</div>
 						<!-- for the related sets for the tune -->
@@ -187,7 +232,7 @@
 					    	<button class="btn btn-info" style="margin-top: 14px;margin-left:390px;">Add Tune</button>
 					    	<!-- link for more information -->
 							<a value="<?=$recwith[$idx]["id"]?>" href="tuneSpec.php?id=<?=$recwith[$idx]["id"]?>">
-			    				<?php echo '<h5 class="display-3" style="margin-top:-10px;">See More...</h5>'?>
+			    				<h5 class="display-3" style="margin-top:-10px;">See More...</h5>
 			    			</a>
 						</div>
 						<?php
