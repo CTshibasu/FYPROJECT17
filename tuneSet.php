@@ -38,14 +38,14 @@
 	}
 
 	// echo '<pre>'.tuneSet($member_id).'</pre>';
-	$arr = tuneSet($member_id);
+	// $arr = tuneSet($member_id);
 
 	// convert the tune_id
-	$arr_php = json_decode($arr, 1);
+	// $arr_php = json_decode($arr, 1);
 	// echo "<br>----------------------------------<br>";
 	// var_dump($arr_php);
 
-	$tune_id = $arr_php["sets"][0]["id"];
+	// $tune_id = $arr_php["sets"][0]["id"];
 
 	// now to get the function that looks at the tune id of the first tune in
 	// the tune set

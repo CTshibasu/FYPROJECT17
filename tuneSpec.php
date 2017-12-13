@@ -176,7 +176,13 @@
 							    			?>
 							    		</a>
 									</h3>
+									<!-- hidden form to send to other page -->
+									<form class="" style="display: none;">
+										
+									</form>
 								<?php
+										// create a hidden form that has the tune and member IDs
+										// above this...
 										}
 									}
 								?>
