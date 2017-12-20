@@ -5,11 +5,28 @@
 
 	// make a feature that looks at the JSON data
 	// for the profile of boscaceoil
+	// in need of making this page static -> dynamic
+
+	// for the following, here is what is required:
+	// getting information from the member_id + tune_id from the tuneSpec.php
+	// will GET (for now) information in form format.
+
+	// populate the member_id and tune_id variables
+	// call the setTuneInfo function and then dump data on page in array form
+	// populate the page with array data
 
 	// the two get variables, member_id and the tune_id
-	$member_id = 109954;
-	$tune_id = 10192;
-	$member_name = "boscaceoil";
+	// var_dump($_GET);
+
+	// next goal of this link is to bring it back into the tune page with the word cloud and related tunes
+	// by recordings
+
+	$member_id = $_GET["member_id"];
+	$set_id = $_GET["set_id"];
+
+	// need to make more dynamic by calling the member name of the user
+	// by the call of the member
+	$member_name = $_GET["name"];
 	$title = $member_name."'s Set of Tunes";
 
 	// import on header file for the web page
@@ -31,7 +48,7 @@
 			<?php
 
 				// call the function for the members
-				$a = setTuneInfo($member_id, $tune_id);
+				$a = setTuneInfo($member_id, $set_id);
 
 				// the name of the combination of the set
 				$t = json_decode($a, 1);
@@ -42,12 +59,12 @@
 			?>
 
 			<!-- now having to put -->
-			<div class="jumbotron">
+			<div class="well" style="display:block; width:1280px;">
 			  <div class="container">
 			    <h3 class="display-3"><?php echo ($i+1).". ".$t["settings"][$i]["name"]?></h3>
 			    <p class="lead">
 			    	<div>
-			    		abc: <?="<pre>".$t["settings"][$i]["abc"]."</pre>"?>
+			    		abc: <?="".$t["settings"][$i]["abc"].""?>
 			    	</div>
 		    	</p>
 			    <p class="lead">
@@ -74,7 +91,11 @@
 			<?php
 				}
 			?>
-
+			<!-- have another well div that indicates what the set of tunes mostly consists of -->
+			<div class="well" style="display:none">
+				<!-- have the set array for the tunes -->
+				<!-- for the type of tunes for the settings info of the JSON array -->
+			</div>
 	</div>
 
 <?php
